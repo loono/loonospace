@@ -83,7 +83,10 @@ def delete():
 
 @app.route('/remove', methods=['POST'])
 def remove():
-    
+
+    if md5.new(request.form['code']).hexdigest() != '':
+        return redirect(url_for('delete'))
+
     for f in request.form.getlist('files'):
     	f = "'" + f + "'"
         q = db.GqlQuery("SELECT * FROM Article WHERE fileid = " + f)
