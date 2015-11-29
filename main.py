@@ -20,7 +20,7 @@ class Article(db.Model):
 
 app = Flask(__name__)
 f=open('password.cfg')
-code = f.readline().split()
+code = f.readline().strip()
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
@@ -48,7 +48,7 @@ def add_content():
 
 @app.route('/post', methods=['POST'])
 def post_content():
-    
+
     if md5.new(request.form['code']).hexdigest() != code:
     	return redirect(url_for('add_content'))
 
