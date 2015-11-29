@@ -19,6 +19,8 @@ class Article(db.Model):
     time = db.StringProperty(required=True)
 
 app = Flask(__name__)
+f=open('password.cfg')
+code = f.readline().split()
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
@@ -47,7 +49,7 @@ def add_content():
 @app.route('/post', methods=['POST'])
 def post_content():
     
-    if md5.new(request.form['code']).hexdigest() != '':
+    if md5.new(request.form['code']).hexdigest() != code:
     	return redirect(url_for('add_content'))
 
     title = request.form['title']
@@ -84,7 +86,7 @@ def delete():
 @app.route('/remove', methods=['POST'])
 def remove():
 
-    if md5.new(request.form['code']).hexdigest() != '':
+    if md5.new(request.form['code']).hexdigest() != code:
         return redirect(url_for('delete'))
 
     for f in request.form.getlist('files'):
